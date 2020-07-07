@@ -24,3 +24,4 @@ Open browser to try this example.
 ```
 open index.html
 ```
+# cognitoAuth
