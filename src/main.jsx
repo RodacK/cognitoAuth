@@ -29,15 +29,12 @@ class OTPForm extends React.Component {
       otp: ''      
     };
   }
-
   handleOtpChange(e) {
     this.setState({otp: e.target.value});
   }
-
   handleSubmit(e) {
     e.preventDefault();
     const otp = this.state.otp.trim();
-
     var userData = {
       Username: 'melo',
       Pool: userPool,
@@ -52,7 +49,6 @@ cognitoUser.confirmRegistration(otp, true, function(err, result) {
 	console.log('call result: ' + result);
 });
   }
-
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
@@ -65,7 +61,6 @@ cognitoUser.confirmRegistration(otp, true, function(err, result) {
     );
   }
 }
-
 ReactDOM.render(<OTPForm />, document.getElementById('app'));
 **/
 //Registro
@@ -172,4 +167,3 @@ class SignUpForm extends React.Component {
 }
 
 ReactDOM.render(<SignUpForm />, document.getElementById('app'));
-
