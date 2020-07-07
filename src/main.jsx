@@ -4,7 +4,8 @@
 import {Config, CognitoIdentityCredentials} from "aws-sdk";
 import {
   CognitoUserPool,
-  CognitoUser
+  CognitoUser,
+  CognitoUserAttribute
 } from "amazon-cognito-identity-js";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -20,6 +21,7 @@ const userPool = new CognitoUserPool({
   ClientId: appConfig.ClientId,
 });
 //OTP
+/**
 class OTPForm extends React.Component {
   constructor(props) {
     super(props);
@@ -27,15 +29,12 @@ class OTPForm extends React.Component {
       otp: ''      
     };
   }
-
   handleOtpChange(e) {
     this.setState({otp: e.target.value});
   }
-
   handleSubmit(e) {
     e.preventDefault();
     const otp = this.state.otp.trim();
-
     var userData = {
       Username: 'melo',
       Pool: userPool,
@@ -50,7 +49,6 @@ cognitoUser.confirmRegistration(otp, true, function(err, result) {
 	console.log('call result: ' + result);
 });
   }
-
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
@@ -63,11 +61,10 @@ cognitoUser.confirmRegistration(otp, true, function(err, result) {
     );
   }
 }
-
 ReactDOM.render(<OTPForm />, document.getElementById('app'));
-
+**/
 //Registro
-/**
+
 class SignUpForm extends React.Component {
   constructor(props) {
     super(props);
@@ -75,14 +72,15 @@ class SignUpForm extends React.Component {
       email: '',
       password: '',
       nickname: '',
-      phone_number: ''
+      phone_number: '',
+      id:'',
+      type_id:''
     };
   }
 
   handleEmailChange(e) {
     this.setState({email: e.target.value});
   }
-
   handlePasswordChange(e) {
     this.setState({password: e.target.value});
   }
@@ -92,6 +90,12 @@ class SignUpForm extends React.Component {
   handlePhoneChange(e) {
     this.setState({phone_number: e.target.value});
   }
+  handleIdChange(e) {
+    this.setState({id: e.target.value});
+  }
+  handleTypeIdChange(e) {
+    this.setState({type_id: e.target.value});
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -99,6 +103,8 @@ class SignUpForm extends React.Component {
     const password = this.state.password.trim();
     const nickname = this.state.nickname.trim();
     const phone_number = this.state.phone_number.trim();
+    const id = this.state.id.trim();
+    const type_id = this.state.type_id.trim();
     const attributeList = [
       new CognitoUserAttribute({
         Name: 'email',
@@ -111,6 +117,10 @@ class SignUpForm extends React.Component {
       new CognitoUserAttribute({
         Name: 'phone_number',
         Value: phone_number,
+      }),
+      new CognitoUserAttribute({
+        Name: 'custom:id',
+        Value: type_id.concat(id),
       })
     ];
     userPool.signUp(nickname, password, attributeList, null, (err, result) => {
@@ -142,6 +152,14 @@ class SignUpForm extends React.Component {
                value={this.state.password}
                placeholder="Password"
                onChange={this.handlePasswordChange.bind(this)}/>
+        <input type="text"
+               value={this.state.id}
+               placeholder="id"
+               onChange={this.handleIdChange.bind(this)}/>
+        <input type="text"
+               value={this.state.type_id}
+               placeholder="ingrese CC o CE"
+               onChange={this.handleTypeIdChange.bind(this)}/>
         <input type="submit"/>
       </form>
     );
@@ -149,4 +167,3 @@ class SignUpForm extends React.Component {
 }
 
 ReactDOM.render(<SignUpForm />, document.getElementById('app'));
-**/
